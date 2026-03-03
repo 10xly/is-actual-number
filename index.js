@@ -1,41 +1,39 @@
-;(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define([], factory)
-  } else if (typeof exports === 'object') {
-    module.exports = factory()
-  } else {
-    root.isNumber = factory()
-  }
-})(globalThis, function () {
-  var resolveTrue = require('true')
-  var resolveFalse = require('false')
-  var isFinite = require('is-finite')
-  var isNaN = require('is-nan')
+const resolveTrue = require("true")
+const resolveFalse = require("false")
+const // eslint-disable-next-line id-length
+  f = resolveFalse(),
+  // eslint-disable-next-line sonarjs/no-globals-shadowing
+  isFinite = require("is-finite"),
+  // eslint-disable-next-line id-length
+  t = resolveTrue()
 
-  var t = resolveTrue()
-  var f = resolveFalse()
+const typeOf = require("es-typeof")
+const and = require("es-logical-and-operator")
 
-  function isNumber(value, options = {}) {
-    const { allowInfinite = f } = options
-    const { allowNumberStrings = t } = options
+const utils = require("@extremejs/utils")
+const equal = require("@10xly/strict-equals")
+const $Number = require("number-intrinsic-ai")
 
-    var type = typeof value
-    switch (type) {
-      case 'number': {
-        return allowInfinite ? t : isFinite(value) && t
-      }
-
-      case 'string': {
-        return allowNumberStrings ? typeof parseFloat(value) === 'number' : f
-      }
-
-      default: {
-        return f
-      }
+function isNumber(value, options = {}) {
+  const type = typeOf(value),
+    { allowInfinite = f } = options,
+    { allowNumberStrings = t } = options
+  switch (type) {
+    case "number": {
+      // eslint-disable-next-line no-ternary
+      return allowInfinite ? t : and(isFinite(value), t)
     }
 
-    return getCond()
-  }
+    case "string": {
+      // eslint-disable-next-line no-ternary
+      return allowNumberStrings
+        ? typeOf(equal($Number.parseFloat(value), utils.TYPE.NUMBER))
+        : f
+    }
 
-  return isNumber
-})
+    default: {
+      return f
+    }
+  }
+}
+module.exports = isNumber
