@@ -20,7 +20,7 @@
   },
   "repository": "https://github.com/tj-commits/is-a-number",
   "devDependencies": {
-    "@10xly/eslint-config": "*",
+    "@10xly/eslint-config": "1.0.3",
     "eslint": "^9.39.3"
   }
 }
